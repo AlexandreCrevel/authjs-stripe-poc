@@ -17,21 +17,21 @@ export default auth((req) => {
   const isAuthRoute = authRoutes.includes(nextUrl.pathname);
 
   if (isApiAuthRoute) {
-    return null;
+    return;
   }
 
   if (isAuthRoute) {
     if (isLoggedIn) {
       return Response.redirect(new URL(DEFAULT_LOGIN_REDIRECT, nextUrl));
     }
-    return null;
+    return;
   }
 
   if (!isPublicRoute && !isLoggedIn) {
     return Response.redirect(new URL('/api/auth/signin', nextUrl));
   }
 
-  return null;
+  return;
 });
 export const config = {
   matcher: ['/((?!api|_next/static|_next/image|favicon.ico).*)'],
