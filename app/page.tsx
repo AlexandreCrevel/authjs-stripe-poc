@@ -5,7 +5,6 @@ export default async function Home() {
   const session = await auth();
   if (!session?.user) return null;
   const user = await getUserInformations();
-  console.log(user);
 
   return (
     <div>

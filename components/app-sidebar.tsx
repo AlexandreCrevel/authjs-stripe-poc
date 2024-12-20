@@ -1,5 +1,6 @@
-import { Home, Inbox } from 'lucide-react';
+import { Home, Inbox, Star } from 'lucide-react';
 
+import { getRole } from '@/actions/user';
 import { auth } from '@/auth';
 import {
   Sidebar,
@@ -21,16 +22,27 @@ const items = [
     title: 'Home',
     url: '/',
     icon: Home,
+    access: ['USER', 'PREMIUM_USER', 'ADMIN'],
+  },
+  {
+    title: 'Premium',
+    url: '/premium',
+    icon: Star,
+    access: ['PREMIUM_USER', 'ADMIN'],
+    hide: false,
   },
   {
     title: 'Admin',
     url: '/admin',
     icon: Inbox,
+    access: ['ADMIN'],
+    hide: true,
   },
 ];
 
 const AppSidebar = async () => {
   const session = await auth();
+  const role = await getRole();
   const image = session?.user?.image;
   return (
     <Sidebar>
@@ -47,7 +59,10 @@ const AppSidebar = async () => {
           <SidebarGroupContent>
             <SidebarMenu>
               {items.map((item) => (
-                <SidebarMenuItem key={item.title}>
+                <SidebarMenuItem
+                  key={item.title}
+                  hidden={item.hide && role !== 'ADMIN'}
+                >
                   <SidebarMenuButton asChild>
                     <a href={item.url}>
                       <item.icon />

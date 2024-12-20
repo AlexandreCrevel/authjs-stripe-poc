@@ -4,10 +4,9 @@ import { adminTableColumns } from '@/components/AdminTable/columns';
 
 const Admin = async () => {
   const users = await getUserList();
-  console.log(users);
   return (
-    <div>
-      Admin Page
+    <div className='p-4 pt-8'>
+      <h1 className='font-bold text-3xl py-4'>Admin Page</h1>
       <AdminTable columns={adminTableColumns} data={users} />
     </div>
   );

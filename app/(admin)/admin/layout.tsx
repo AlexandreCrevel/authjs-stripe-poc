@@ -6,7 +6,7 @@ const layout = async ({ children }: { children: React.ReactNode }) => {
   if (role !== 'ADMIN') {
     return <div>Unauthorized</div>;
   }
-  return <>{children}</>;
+  return children;
 };
 
 export default layout;
