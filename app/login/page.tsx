@@ -13,6 +13,7 @@ import { Input } from '@/components/ui/input';
 import { LoginSchema } from '@/schemas';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Github } from 'lucide-react';
+import { signIn } from 'next-auth/react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
@@ -30,6 +31,11 @@ const LoginPage = () => {
   });
   function onSubmit(values: z.infer<typeof LoginSchema>) {
     console.log(values);
+    signIn('credentials', {
+      email: values.email,
+      password: values.password,
+      callbackUrl: '/',
+    });
   }
   return (
     <div className='flex items-center justify-center h-screen flex-col gap-4'>

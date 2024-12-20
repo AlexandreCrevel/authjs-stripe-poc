@@ -2,6 +2,7 @@
 import { auth } from '@/auth';
 import { prisma } from '@/prisma/prisma';
 import { Role } from '@prisma/client';
+import bcrypt from 'bcryptjs';
 
 const getUserInformations = async () => {
   const session = await auth();
@@ -57,10 +58,11 @@ const createUser = async (
   if (existingUser) {
     throw new Error('Un utilisateur avec cet email existe déjà.');
   }
+  const hashedPassword = await bcrypt.hash(password, 10);
   const user = await prisma.user.create({
     data: {
       email,
-      password,
+      password: hashedPassword,
       name,
       role,
     },
@@ -78,20 +80,38 @@ const deleteUser = async (email: string) => {
 };
 
 const getUserByEmail = async (email: string) => {
-  const user = await prisma.user.findUnique({
-    where: {
-      email,
-    },
-  });
-  return user;
+  try {
+    const user = await prisma.user.findUnique({
+      where: {
+        email,
+      },
+    });
+    return user;
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
 };
-
+const getUserById = async (id: string) => {
+  try {
+    const user = await prisma.user.findUnique({
+      where: {
+        id,
+      },
+    });
+    return user;
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
+};
 export {
   changeRole,
   createUser,
   deleteUser,
   getRole,
   getUserByEmail,
+  getUserById,
   getUserInformations,
   getUserList,
 };

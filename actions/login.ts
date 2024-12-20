@@ -6,6 +6,20 @@ const loginWithGithub = async () => {
   await signIn('github');
 };
 
+const getUserByEmail = async (email: string) => {
+  try {
+    const user = await prisma.user.findUnique({
+      where: {
+        email,
+      },
+    });
+    return user;
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
+};
+
 const loginUser = async (credentials: { email: string; password: string }) => {
   const user = await prisma.user.findUnique({
     where: {
@@ -21,4 +35,4 @@ const loginUser = async (credentials: { email: string; password: string }) => {
   return user;
 };
 
-export { loginUser, loginWithGithub };
+export { getUserByEmail, loginUser, loginWithGithub };
