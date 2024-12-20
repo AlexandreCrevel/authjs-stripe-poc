@@ -44,3 +44,54 @@ export const changeRole = async (email: string, role: Role) => {
     },
   });
 };
+
+export const createUser = async (
+  email: string,
+  password: string,
+  name: string,
+  role: Role
+) => {
+  const existingUser = await prisma.user.findUnique({
+    where: { email },
+  });
+
+  if (existingUser) {
+    throw new Error('Un utilisateur avec cet email existe déjà.');
+  }
+  const user = await prisma.user.create({
+    data: {
+      email,
+      password,
+      name,
+      role,
+    },
+  });
+  return user;
+};
+
+export const getUserByEmail = async (email: string) => {
+  const user = await prisma.user.findUnique({
+    where: {
+      email,
+    },
+  });
+  return user;
+};
+
+export const loginUser = async (credentials: {
+  email: string;
+  password: string;
+}) => {
+  const user = await prisma.user.findUnique({
+    where: {
+      email: credentials.email,
+    },
+  });
+  if (!user) {
+    throw new Error('Utilisateur introuvable.');
+  }
+  if (user.password !== credentials.password) {
+    throw new Error('Mot de passe incorrect.');
+  }
+  return user;
+};

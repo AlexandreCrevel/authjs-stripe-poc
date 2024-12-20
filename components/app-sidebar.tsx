@@ -22,13 +22,11 @@ const items = [
     title: 'Home',
     url: '/',
     icon: Home,
-    access: ['USER', 'PREMIUM_USER', 'ADMIN'],
   },
   {
     title: 'Premium',
     url: '/premium',
     icon: Star,
-    access: ['PREMIUM_USER', 'ADMIN'],
     hide: false,
   },
   {
