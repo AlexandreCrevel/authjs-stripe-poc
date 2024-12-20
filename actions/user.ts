@@ -86,21 +86,6 @@ const getUserByEmail = async (email: string) => {
   return user;
 };
 
-const loginUser = async (credentials: { email: string; password: string }) => {
-  const user = await prisma.user.findUnique({
-    where: {
-      email: credentials.email,
-    },
-  });
-  if (!user) {
-    throw new Error('Utilisateur introuvable.');
-  }
-  if (user.password !== credentials.password) {
-    throw new Error('Mot de passe incorrect.');
-  }
-  return user;
-};
-
 export {
   changeRole,
   createUser,
@@ -109,5 +94,4 @@ export {
   getUserByEmail,
   getUserInformations,
   getUserList,
-  loginUser,
 };
