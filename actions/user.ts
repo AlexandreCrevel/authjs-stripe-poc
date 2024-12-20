@@ -1,10 +1,9 @@
 'use server';
-
 import { auth } from '@/auth';
 import { prisma } from '@/prisma/prisma';
 import { Role } from '@prisma/client';
 
-export const getUserInformations = async () => {
+const getUserInformations = async () => {
   const session = await auth();
   const user = prisma.user.findUnique({
     where: {
@@ -14,17 +13,17 @@ export const getUserInformations = async () => {
   return user;
 };
 
-export const getUserList = async () => {
+const getUserList = async () => {
   const users = prisma.user.findMany();
   return users;
 };
 
-export const getRole = async () => {
+const getRole = async () => {
   const user = await getUserInformations();
   return user?.role;
 };
 
-export const changeRole = async (email: string, role: Role) => {
+const changeRole = async (email: string, role: Role) => {
   const user = await prisma.user.findUnique({
     where: {
       email,
@@ -45,7 +44,7 @@ export const changeRole = async (email: string, role: Role) => {
   });
 };
 
-export const createUser = async (
+const createUser = async (
   email: string,
   password: string,
   name: string,
@@ -69,7 +68,16 @@ export const createUser = async (
   return user;
 };
 
-export const getUserByEmail = async (email: string) => {
+const deleteUser = async (email: string) => {
+  const user = await prisma.user.delete({
+    where: {
+      email,
+    },
+  });
+  return user;
+};
+
+const getUserByEmail = async (email: string) => {
   const user = await prisma.user.findUnique({
     where: {
       email,
@@ -78,10 +86,7 @@ export const getUserByEmail = async (email: string) => {
   return user;
 };
 
-export const loginUser = async (credentials: {
-  email: string;
-  password: string;
-}) => {
+const loginUser = async (credentials: { email: string; password: string }) => {
   const user = await prisma.user.findUnique({
     where: {
       email: credentials.email,
@@ -94,4 +99,15 @@ export const loginUser = async (credentials: {
     throw new Error('Mot de passe incorrect.');
   }
   return user;
+};
+
+export {
+  changeRole,
+  createUser,
+  deleteUser,
+  getRole,
+  getUserByEmail,
+  getUserInformations,
+  getUserList,
+  loginUser,
 };

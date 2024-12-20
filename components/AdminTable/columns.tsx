@@ -1,8 +1,9 @@
 'use client';
 
-import { changeRole } from '@/actions/user';
 import { Role } from '@prisma/client';
 import { ColumnDef } from '@tanstack/react-table';
+import DeleteUserButton from './delete-user-button';
+import RoleSelect from './RoleSelect';
 
 export type User = {
   name: string | null;
@@ -26,35 +27,23 @@ export const adminTableColumns: ColumnDef<User>[] = [
     cell: ({ row, getValue }) => {
       const currentRole = getValue() as Role;
       const email = row.original.email;
-
-      const handleChange = async (e: React.ChangeEvent<HTMLSelectElement>) => {
-        const newRole = e.target.value as Role;
-        try {
-          changeRole(email, newRole);
-        } catch (error) {
-          console.error(error);
-          alert('Erreur lors de la mise à jour du rôle');
-        }
-      };
-
-      return (
-        <select
-          title='role'
-          value={currentRole}
-          onChange={handleChange}
-          className='border rounded p-1'
-        >
-          <option value='ADMIN'>Admin</option>
-          <option value='STANDARD_USER'>Standard User</option>
-          <option value='PREMIUM_USER'>Premium User</option>
-        </select>
-      );
+      return <RoleSelect email={email} currentRole={currentRole} />;
     },
   },
   {
     accessorKey: 'createdAt',
     header: 'Registration Date',
     cell: (cell) =>
-      new Date(cell.getValue() as string | number | Date).toLocaleDateString(),
+      new Date(cell.getValue() as string | number | Date).toLocaleString(),
+  },
+  {
+    id: 'actions',
+    header: '',
+    cell: ({ row }) => {
+      const user = row.original;
+      return <DeleteUserButton email={user.email} name={user.name} />;
+    },
+    enableSorting: false,
+    enableColumnFilter: false,
   },
 ];
