@@ -11,8 +11,7 @@ export const publicRoutes = ['/faq'];
  * @type {string[]}
  */
 export const authRoutes = [
-  '/signin',
-  '/signup',
+  '/login',
   'api/auth/signin',
   'api/auth/signup',
   'api/auth/signout',

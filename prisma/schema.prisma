@@ -4,8 +4,7 @@ datasource db {
 }
 
 generator client {
-  provider        = "prisma-client-js"
-  previewFeatures = ["driverAdapters"]
+  provider = "prisma-client-js"
 }
 
 enum Role {
@@ -20,6 +19,7 @@ model User {
   email         String    @unique
   emailVerified DateTime?
   image         String?
+  password      String?
   role          Role      @default(STANDARD_USER)
   accounts      Account[]
   sessions      Session[]
