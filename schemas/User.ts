@@ -9,8 +9,6 @@ export const LoginSchema = z.object({
   }),
 });
 
-export type LoginSchemaType = z.infer<typeof LoginSchema>;
-
 export const RegisterSchema = z.object({
   email: z.string().email({
     message: 'Email is required.',
@@ -28,4 +26,5 @@ export const RegisterSchema = z.object({
   }),
 });
 
+export type LoginSchemaType = z.infer<typeof LoginSchema>;
 export type RegisterSchemaType = z.infer<typeof RegisterSchema>;

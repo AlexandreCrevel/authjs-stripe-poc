@@ -19,7 +19,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { useToast } from '@/hooks/use-toast'; // Assurez-vous que ce hook est correctement implémenté
-import { RegisterSchema, RegisterSchemaType } from '@/schemas';
+import { RegisterSchema, RegisterSchemaType } from '@/schemas/User';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';

@@ -3,7 +3,7 @@ import type { NextAuthConfig } from 'next-auth';
 import Credentials from 'next-auth/providers/credentials';
 import GitHub from 'next-auth/providers/github';
 import { getUserByEmail } from './actions/getUser';
-import { LoginSchema } from './schemas';
+import { LoginSchema } from './schemas/User';
 
 export default {
   providers: [

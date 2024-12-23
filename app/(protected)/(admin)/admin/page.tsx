@@ -1,7 +1,7 @@
-import { getUserList } from '@/actions/user';
+import { getUserList } from '@/actions/getUser';
 import AddUserModal from '@/components/AddUserModal/AddUserModal';
-import AdminTable from '@/components/AdminTable/admin-table';
-import { adminTableColumns } from '@/components/AdminTable/columns';
+import AdminTable from '@/components/AdminTable/AdminTable';
+import { adminTableColumns } from '@/components/AdminTable/AdminTableColumns';
 
 const Admin = async () => {
   const users = await getUserList();

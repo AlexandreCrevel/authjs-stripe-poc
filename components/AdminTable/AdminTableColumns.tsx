@@ -2,7 +2,7 @@
 
 import { Role } from '@prisma/client';
 import { ColumnDef } from '@tanstack/react-table';
-import DeleteUserButton from './delete-user-button';
+import DeleteUserButton from './DeleteUserButton';
 import RoleSelect from './RoleSelect';
 
 export type User = {

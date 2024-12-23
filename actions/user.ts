@@ -1,6 +1,6 @@
 'use server';
 import { auth } from '@/auth';
-import { prisma } from '@/prisma/prisma';
+import { prisma } from '@/lib/prisma';
 import { Role } from '@prisma/client';
 import bcrypt from 'bcryptjs';
 
@@ -14,12 +14,7 @@ const getUserInformations = async () => {
   return user;
 };
 
-const getUserList = async () => {
-  const users = prisma.user.findMany();
-  return users;
-};
-
-const getRole = async () => {
+const getUserRole = async () => {
   const user = await getUserInformations();
   return user?.role;
 };
@@ -79,39 +74,4 @@ const deleteUser = async (email: string) => {
   return user;
 };
 
-const getUserByEmail = async (email: string) => {
-  try {
-    const user = await prisma.user.findUnique({
-      where: {
-        email,
-      },
-    });
-    return user;
-  } catch (error) {
-    console.error(error);
-    return null;
-  }
-};
-const getUserById = async (id: string) => {
-  try {
-    const user = await prisma.user.findUnique({
-      where: {
-        id,
-      },
-    });
-    return user;
-  } catch (error) {
-    console.error(error);
-    return null;
-  }
-};
-export {
-  changeRole,
-  createUser,
-  deleteUser,
-  getRole,
-  getUserByEmail,
-  getUserById,
-  getUserInformations,
-  getUserList,
-};
+export { changeRole, createUser, deleteUser, getUserInformations, getUserRole };
