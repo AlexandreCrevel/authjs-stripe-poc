@@ -34,4 +34,26 @@ const getUserList = async () => {
   return users;
 };
 
-export { getUserByEmail, getUserById, getUserList };
+const getUserSubscriptionWithEmail = async (
+  email: string | null | undefined
+) => {
+  if (!email) return null;
+  const subscription = prisma.subscription.findFirst({
+    where: {
+      user: {
+        email,
+      },
+    },
+    include: {
+      user: true,
+    },
+  });
+  return subscription;
+};
+
+export {
+  getUserByEmail,
+  getUserById,
+  getUserList,
+  getUserSubscriptionWithEmail,
+};

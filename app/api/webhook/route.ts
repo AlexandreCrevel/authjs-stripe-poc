@@ -1,12 +1,12 @@
 'use server';
 import { getUserByEmail } from '@/actions/getUser';
-import { createSubscription, updateSubscriptionStatus } from '@/actions/stripe';
+import {
+  createSubscription,
+  updateSubscriptionStatus,
+} from '@/actions/subscription';
+import { stripe } from '@/lib/stripe';
 import { NextResponse } from 'next/server';
-import Stripe from 'stripe';
-
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY ?? '', {
-  apiVersion: '2024-12-18.acacia',
-});
+import type Stripe from 'stripe';
 
 export const POST = async (req: Request) => {
   const sig = req.headers.get('stripe-signature');
@@ -30,7 +30,6 @@ export const POST = async (req: Request) => {
     return NextResponse.json({ error: 'Unknown error' }, { status: 400 });
   }
 
-  console.log('Event received:', event.type);
   switch (event.type) {
     case 'checkout.session.completed': {
       const session = event.data.object as Stripe.Checkout.Session;
@@ -44,24 +43,36 @@ export const POST = async (req: Request) => {
         const user = await getUserByEmail(email);
         if (!user) break;
 
-        await createSubscription(user.id, subscriptionId);
+        await createSubscription({
+          userId: user.id,
+          stripeSubscriptionId: subscriptionId,
+        });
       }
       break;
     }
 
     case 'customer.subscription.updated': {
       const subscription = event.data.object as Stripe.Subscription;
-      console.log(
-        `Subscription updated: ${subscription.id} => ${subscription.status}`
-      );
-      await updateSubscriptionStatus(subscription.id, subscription.status);
+
+      await updateSubscriptionStatus({
+        stripeSubscriptionId: subscription.id,
+        status: subscription.status,
+        currentPeriodEnd: new Date(subscription.current_period_end * 1000),
+        cancelAtPeriodEnd: subscription.cancel_at_period_end,
+        startDate: new Date(subscription.start_date * 1000),
+      });
       break;
     }
 
     case 'customer.subscription.deleted': {
       const subscription = event.data.object as Stripe.Subscription;
-      console.log(`Subscription deleted: ${subscription.id}`);
-      await updateSubscriptionStatus(subscription.id, 'canceled');
+      await updateSubscriptionStatus({
+        stripeSubscriptionId: subscription.id,
+        status: subscription.status,
+        currentPeriodEnd: new Date(subscription.current_period_end * 1000),
+        cancelAtPeriodEnd: subscription.cancel_at_period_end,
+        startDate: new Date(subscription.start_date * 1000),
+      });
       break;
     }
 

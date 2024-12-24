@@ -1,11 +1,7 @@
 'use server';
 import { auth } from '@/auth'; // Ton NextAuth
+import { stripe } from '@/lib/stripe';
 import { NextResponse } from 'next/server';
-import Stripe from 'stripe';
-
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY ?? '', {
-  apiVersion: '2024-12-18.acacia',
-});
 
 export const POST = async () => {
   // Retrieve authenticated user

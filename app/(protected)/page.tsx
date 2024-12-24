@@ -1,6 +1,7 @@
-import { getSubscriptionByEmail } from '@/actions/stripe';
+import { getUserSubscriptionWithEmail } from '@/actions/getUser';
 import { getUserInformations } from '@/actions/user';
 import { auth } from '@/auth';
+import CancelSubscriptionButton from '@/components/CancelSubscriptionButton/CancelSubscriptionButton';
 import PremiumButton from '@/components/PremiumButton/PremiumButton';
 
 export default async function Home() {
@@ -8,7 +9,7 @@ export default async function Home() {
   if (!session?.user) return null;
 
   const user = await getUserInformations();
-  const subscription = await getSubscriptionByEmail(user?.email);
+  const subscription = await getUserSubscriptionWithEmail(user?.email);
   return (
     <div>
       <h1>Home</h1>
@@ -25,6 +26,7 @@ export default async function Home() {
         <>
           <p>Subscription ID : {subscription?.stripeSubscriptionId}</p>
           <p>Status : {subscription?.status}</p>
+          <CancelSubscriptionButton />
         </>
       ) : (
         <p>Aucun abonnement</p>

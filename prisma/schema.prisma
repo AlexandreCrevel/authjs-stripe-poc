@@ -27,7 +27,25 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  Subscription Subscription[]
+  // Relation un-à-un avec Subscription
+  subscription Subscription? @relation("UserSubscription")
+}
+
+model Subscription {
+  id                   String    @id @default(cuid())
+  stripeSubscriptionId String?   @unique
+  status               String?
+  currentPeriodEnd     DateTime?
+  startDate            DateTime?
+  cancelAtPeriodEnd    Boolean?  @default(false)
+  createdAt            DateTime  @default(now())
+  updatedAt            DateTime  @default(now())
+
+  // Clé étrangère unique vers User
+  userId String @unique
+  user   User   @relation("UserSubscription", fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
 }
 
 model Account {
@@ -67,15 +85,4 @@ model VerificationToken {
   expires    DateTime
 
   @@id([identifier, token])
-}
-
-model Subscription {
-  id                   String   @id @default(cuid())
-  userId               String   @unique
-  stripeSubscriptionId String?
-  status               String?
-  createdAt            DateTime @default(now())
-  updatedAt            DateTime @updatedAt
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
