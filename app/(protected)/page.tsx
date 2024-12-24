@@ -10,6 +10,7 @@ export default async function Home() {
 
   const user = await getUserInformations();
   const subscription = await getUserSubscriptionWithEmail(user?.email);
+
   return (
     <div>
       <h1>Home</h1>
@@ -27,6 +28,15 @@ export default async function Home() {
           <p>Subscription ID : {subscription?.stripeSubscriptionId}</p>
           <p>Status : {subscription?.status}</p>
           <CancelSubscriptionButton />
+          <p>Start date : {subscription?.startDate?.toLocaleString()}</p>
+          <p>
+            Current period end :{' '}
+            {subscription?.currentPeriodEnd?.toLocaleString()}
+          </p>
+          <p>
+            Cancel at period end :{' '}
+            {subscription?.cancelAtPeriodEnd ? 'True' : 'False'}
+          </p>
         </>
       ) : (
         <p>Aucun abonnement</p>

@@ -1,9 +1,8 @@
 'use client';
-import { Button } from '@/components/ui/button';
 import { signOut } from 'next-auth/react';
 
 const DisconnectButton = () => {
-  return <Button onClick={() => signOut()}>Disconnect</Button>;
+  return <div onClick={() => signOut()}>Disconnect</div>;
 };
 
 export default DisconnectButton;

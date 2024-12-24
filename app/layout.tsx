@@ -1,10 +1,14 @@
 import { auth } from '@/auth';
 import AppSidebar from '@/components/AppSidebar/AppSidebar';
-import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
+import Topbar from '@/components/Topbar/Topbar';
+import { SidebarProvider } from '@/components/ui/sidebar';
 import { Toaster } from '@/components/ui/toaster';
 import type { Metadata } from 'next';
 import { SessionProvider } from 'next-auth/react';
+import { Roboto } from 'next/font/google';
 import './globals.css';
+
+const roboto = Roboto({ weight: ['400', '500', '700'] });
 
 export const metadata: Metadata = {
   title: 'Admin Panel | Next.js + TypeScript + Tailwind CSS',
@@ -25,9 +29,9 @@ export default async function Layout({
           <SidebarProvider>
             <Toaster />
             {user && <AppSidebar />}
-            <main className='px-4 w-screen h-screen overflow-y-auto'>
-              {user && <SidebarTrigger />}
-              {children}
+            <main className={`${roboto}w-screen h-screen overflow-y-auto`}>
+              {user && <Topbar />}
+              <div className='p-4'>{children}</div>
             </main>
           </SidebarProvider>
         </SessionProvider>
