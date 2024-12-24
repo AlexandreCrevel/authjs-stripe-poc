@@ -1,16 +1,20 @@
+// app/(protected)/profile/page.tsx
 import { getUserInformations } from '@/actions/user';
+import ProfileForm from '@/components/ProfileForm/ProfileForm';
 
-const Profile = async () => {
+const ProfilePage = async () => {
   const user = await getUserInformations();
-  return (
-    <div>
-      <h1 className='text-2xl mb-4'>Profil</h1>
 
-      <p>Welcome {user?.name}</p>
-      <p>Your email is : {user?.email} </p>
-      <p>Your role is : {user?.role}</p>
-    </div>
-  );
+  if (!user) {
+    // Handle the case where user data is not available
+    return (
+      <div className='flex items-center justify-center h-full'>
+        <p>Loading...</p>
+      </div>
+    );
+  }
+
+  return <ProfileForm user={user} />;
 };
 
-export default Profile;
+export default ProfilePage;
