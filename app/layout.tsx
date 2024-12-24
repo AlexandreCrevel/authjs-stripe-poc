@@ -31,7 +31,7 @@ export default async function Layout({
             {user && <AppSidebar />}
             <main className={`${roboto} w-screen h-screen overflow-y-auto`}>
               {user && <Topbar />}
-              <div className='p-4'>{children}</div>
+              <div className='p-4 w-screen h-screen'>{children}</div>
             </main>
           </SidebarProvider>
         </SessionProvider>
