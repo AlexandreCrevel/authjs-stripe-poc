@@ -8,7 +8,7 @@ import { SessionProvider } from 'next-auth/react';
 import { Roboto } from 'next/font/google';
 import './globals.css';
 
-const roboto = Roboto({ weight: ['400', '500', '700'] });
+const roboto = Roboto({ subsets: ['latin'], weight: ['400', '500', '700'] });
 
 export const metadata: Metadata = {
   title: 'Admin Panel | Next.js + TypeScript + Tailwind CSS',
